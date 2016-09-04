@@ -1,0 +1,27 @@
+{
+  "name": "nodeserver",
+  "version": "1.0.0",
+  "description": "node and mongo server",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geoffCamp/NodeServer.git"
+  },
+  "keywords": [
+    "what"
+  ],
+  "author": "Geoff",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/geoffCamp/NodeServer/issues"
+  },
+  "homepage": "https://github.com/geoffCamp/NodeServer#readme",
+  "dependencies": {
+    "express": "*",
+    "mongodb":"*"
+  }
+}
