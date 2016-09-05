@@ -2,6 +2,10 @@ const http = require('http'),
       express = require('express');
       path = require('path');
 
+MongoClient = require('mongodb').MongoClient,
+Server = require('mongodb').Server,
+CollectionDriver = require('./collectionDriver').CollectionDriver;
+
 const hostname = '127.0.0.1';
 const port = 3000;
 
@@ -19,6 +23,20 @@ server.listen(port, hostname, () => {
 
 var app = express();
 app.set('port', process.env.PORT || port);
+
+var mongoHost = 'localHost';
+var mongoPort = '27017';
+var collectionDriver;
+
+var mongoClient = new MongoClient(new Server(mongoHost, mongoPort));
+mongoClient.connect("mongodb://localhost:27017/MyDatabase", function(err, db) {
+    if (err) {
+        console.error("Error exiting ... must start mongo first");
+        process.exit(1);
+    }
+    colelctionDriver = new CollectionDriver(db);
+});
+
 app.get('/', function(req, res) {
     res.send('<html><body><h1>HelloWorld</h1></body></html>');
 });
