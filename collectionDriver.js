@@ -23,6 +23,7 @@ CollectionDriver.prototype.findAll = function(collectionName, callback) {
     });
 }
 
+//get an object from a collection
 CollectionDriver.prototype.get = function(collectionName, id, callback) { //A
     this.getCollection(collectionName, function(error, the_collection) {
         if (error) callback(error);
@@ -37,6 +38,7 @@ CollectionDriver.prototype.get = function(collectionName, id, callback) { //A
     });
 };
 
+// save an object to a collection
 CollectionDriver.prototype.save = function(collectionName, obj, callback) {
     this.getCollection(collectionName, function(error, the_collection) {
         if (error) {

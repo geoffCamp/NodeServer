@@ -40,9 +40,10 @@ mongoClient.connect("mongodb://localhost:27017/MyDatabase", function(err, db) {
     collectionDriver = new CollectionDriver(db);
 });
 
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // parses incoming body data into a JSON object if its type is JSON
 app.use(express.static(path.join(__dirname, 'public')));
 
+//return a collection, /:colelction means it will take the param as a collection name instead of a filename
 app.get('/:collection', function(req,res) {
     var params = req.params;
     collectionDriver.findAll(req.params.collection, function(error,objs) {
@@ -59,6 +60,7 @@ app.get('/:collection', function(req,res) {
     });
 });
 
+//get an object from a collection
 app.get('/:collection/:entity', function(req, res) {
     var params = req.params;
     var entity = params.entity;
@@ -82,6 +84,7 @@ app.get('/', function(req, res) {
 });
 */
 
+// add an object to the database
 app.post('/:collection', function(req, res) {
     var object = req.body;
     var collection = req.params.collection;
