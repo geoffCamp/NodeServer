@@ -22,6 +22,7 @@
   "homepage": "https://github.com/geoffCamp/NodeServer#readme",
   "dependencies": {
     "express": "*",
-    "mongodb":"*"
+    "mongodb":"*",
+    "pug":"*"
   }
 }

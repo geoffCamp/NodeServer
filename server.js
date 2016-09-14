@@ -23,6 +23,8 @@ server.listen(port, hostname, () => {
 
 var app = express();
 app.set('port', process.env.PORT || port);
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 var mongoHost = 'localHost';
 var mongoPort = '27017';
@@ -37,8 +39,14 @@ mongoClient.connect("mongodb://localhost:27017/MyDatabase", function(err, db) {
     colelctionDriver = new CollectionDriver(db);
 });
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.get('/', function(req, res) {
     res.send('<html><body><h1>HelloWorld</h1></body></html>');
+});
+
+app.use(function (req, res) {
+    res.render('404', {url:req.url});
 });
 
 http.createServer(app).listen(app.get('port'), function() {
