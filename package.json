@@ -23,6 +23,7 @@
   "dependencies": {
     "express": "*",
     "mongodb":"*",
-    "pug":"*"
+    "pug":"*",
+    "body-parser":"*"
   }
 }

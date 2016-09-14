@@ -1,5 +1,6 @@
 const http = require('http'),
       express = require('express');
+      bodyParser = require('body-parser');
       path = require('path');
 
 MongoClient = require('mongodb').MongoClient,
@@ -36,13 +37,61 @@ mongoClient.connect("mongodb://localhost:27017/MyDatabase", function(err, db) {
         console.error("Error exiting ... must start mongo first");
         process.exit(1);
     }
-    colelctionDriver = new CollectionDriver(db);
+    collectionDriver = new CollectionDriver(db);
 });
 
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get('/:collection', function(req,res) {
+    var params = req.params;
+    collectionDriver.findAll(req.params.collection, function(error,objs) {
+        if (error) {
+            res.send(400, error);
+        } else {
+            if (req.accepts('html')) { //this is specified in the header by the browser
+                res.render('data', {objects: objs, collection: req.params.collection});
+            } else {
+                res.set('Content-Type','application/json');
+                res.send(200,objs); 
+            }
+        }
+    });
+});
+
+app.get('/:collection/:entity', function(req, res) {
+    var params = req.params;
+    var entity = params.entity;
+    var collection = params.collection;
+    if (entity) {
+        collectionDriver.get(collection, entity, function(error, objs) {
+            if (error) {
+                res.send(400, objs);
+            } else {
+                res.send(200, objs);
+            }
+        });
+    } else {
+        res.send(400, {error: 'bar url', url: req.url});
+    }
+});
+
+/*
 app.get('/', function(req, res) {
     res.send('<html><body><h1>HelloWorld</h1></body></html>');
+});
+*/
+
+app.post('/:collection', function(req, res) {
+    var object = req.body;
+    var collection = req.params.collection;
+    collectionDriver.save(collection, object, function(err,docs) {
+        if (err) {
+            res.send(400, err);
+        } else {
+            res.send(201, docs);
+        }
+    });
 });
 
 app.use(function (req, res) {

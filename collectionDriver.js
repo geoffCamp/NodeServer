@@ -15,7 +15,7 @@ CollectionDriver.prototype.findAll = function(collectionName, callback) {
     this.getCollection(collectionName, function(error, the_collection) {
         if (error) callback(error);
         else {
-            the_collection.find().toArray(function() {
+            the_collection.find().toArray(function(error, results) {
                 if (error) callback(error);
                 else callback(null, results);
             });
@@ -32,6 +32,19 @@ CollectionDriver.prototype.get = function(collectionName, id, callback) { //A
             else the_collection.findOne({'_id':ObjectID(id)}, function(error,doc) { //C
                 if (error) callback(error);
                 else callback(null, doc);
+            });
+        }
+    });
+};
+
+CollectionDriver.prototype.save = function(collectionName, obj, callback) {
+    this.getCollection(collectionName, function(error, the_collection) {
+        if (error) {
+            callback(error);
+        } else {
+            obj.created_at = new Date();
+            the_collection.insert(obj, function() {
+                callback(null, obj);
             });
         }
     });
